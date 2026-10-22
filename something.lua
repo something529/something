@@ -17,7 +17,7 @@ local function ShakeCam(Power)
 	for i = 1,20 do
 		local NumX = RandomNum(-Power, Power)
 		local NumY = RandomNum(-Power, Power)
-		
+
 		Camera.CFrame = Camera.CFrame * CFrame.Angles(math.rad(NumX), math.rad(NumY), 0)
 		task.wait()
 	end
@@ -28,12 +28,19 @@ RunService.RenderStepped:Connect(function()
 
 	local HumState = Hum:GetState()
 	local IsLanded = HumState == Enum.HumanoidStateType.Landed
-	
+
 	if IsLanded then
 		Clock = os.clock()
+
+		local Number = 0
 		
-		local Number = Hrp.AssemblyLinearVelocity.Magnitude / 12
-		local Result = math.clamp(math.abs(Number) * 0.7, 1, math.huge)
+		if math.abs(Hrp.AssemblyLinearVelocity.Y / 5) <= 30 then
+			Number = math.abs(Hrp.AssemblyLinearVelocity.Y / 63)
+		else
+			Number = math.abs(Hrp.AssemblyLinearVelocity.Magnitude / 10)
+		end
+		
+		local Result = math.clamp(Number, 1, math.huge)
 		
 		task.spawn(function()
 			ShakeCam(Result)
